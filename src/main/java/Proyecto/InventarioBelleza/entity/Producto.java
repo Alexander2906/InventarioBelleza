@@ -45,4 +45,6 @@ public class Producto {
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<VentaDetalle> ventaDetalles;
+
+
 }
