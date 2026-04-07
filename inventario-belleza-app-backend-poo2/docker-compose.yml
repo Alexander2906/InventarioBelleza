@@ -1,0 +1,31 @@
+services:
+  mysql_service:
+    image: mysql:latest
+    container_name: mysql_belleza
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ProductBelleza
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev123456
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  phpmyadmin_service:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_belleza
+    restart: on-failure
+    depends_on:
+      mysql_service:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql_service
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "8081:80"
+
